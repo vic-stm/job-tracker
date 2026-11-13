@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.utils.text import Truncator
 
 
 class Company(models.Model):
@@ -75,7 +76,8 @@ class JobApplication(models.Model):
     work_mode = models.CharField(max_length=20, choices=WorkMode, blank=True)
     seniority = models.CharField(max_length=20, choices=Seniority, blank=True)
     location = models.CharField(max_length=255, blank=True)
-    status = models.CharField(max_length=20, choices=Status, default=Status.SAVED)
+    status = models.CharField(
+        max_length=20, choices=Status, default=Status.SAVED)
     applied_on = models.DateField(null=True, blank=True)
     next_action = models.CharField(max_length=200, blank=True)
     next_action_on = models.DateField(null=True, blank=True)
@@ -94,3 +96,41 @@ class JobApplication(models.Model):
 
     def __str__(self):
         return f"{self.title} at {self.company.name}"
+
+
+class Contact(models.Model):
+    company = models.ForeignKey(
+        Company,
+        related_name="contacts",
+        on_delete=models.CASCADE,
+    )
+    name = models.CharField(max_length=200)
+    role = models.CharField(max_length=200, blank=True)
+    email = models.EmailField(blank=True)
+    linkedin_url = models.URLField(blank=True)
+    notes = models.TextField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["name"]
+
+    def __str__(self):
+        return self.name
+
+
+class Note(models.Model):
+    application = models.ForeignKey(
+        JobApplication,
+        related_name="notes",
+        on_delete=models.CASCADE,
+    )
+    body = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return Truncator(self.body).chars(50)
