@@ -7,3 +7,8 @@ dependencies = [
     "django-environ>=0.14.0",
     "psycopg[binary]>=3.3.9",
 ]
+
+[dependency-groups]
+dev = [
+    "ipython>=9.18.1",
+]
