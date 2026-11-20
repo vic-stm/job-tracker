@@ -8,3 +8,6 @@ db.sqlite3
 
 # Node
 node_modules/
+
+# Cache
+.pytest_cache/
