@@ -11,10 +11,17 @@ APPLICATION_RELATED_KEYS = ("technologies", "notes")
 
 DEMO_DATA = [
     {
-        "company": {"name": "Acme Software", "website": "https://acme.example.com", "location": "Bilbao"},
+        "company": {
+            "name": "Acme Software",
+            "website": "https://acme.example.com",
+            "location": "Bilbao",
+        },
         "contacts": [
-            {"name": "Laura Pérez", "role": "Tech Recruiter",
-                "email": "laura@acme.example.com"},
+            {
+                "name": "Laura Pérez",
+                "role": "Tech Recruiter",
+                "email": "laura@acme.example.com",
+            },
         ],
         "applications": [
             {
@@ -26,7 +33,10 @@ DEMO_DATA = [
                 "salary_max": 55000,
                 "location": "Bilbao",
                 "technologies": ["Angular", "TypeScript", "RxJS"],
-                "notes": ["First call with the recruiter went well.", "Technical interview next Tuesday."],
+                "notes": [
+                    "First call with the recruiter went well.",
+                    "Technical interview next Tuesday.",
+                ],
             },
             {
                 "title": "Full Stack Developer (Angular + Django)",
@@ -39,7 +49,11 @@ DEMO_DATA = [
         ],
     },
     {
-        "company": {"name": "Globex Labs", "website": "https://globex.example.com", "location": "Madrid"},
+        "company": {
+            "name": "Globex Labs",
+            "website": "https://globex.example.com",
+            "location": "Madrid",
+        },
         "contacts": [
             {"name": "Mikel Etxeberria", "role": "Engineering Manager"},
         ],
@@ -74,7 +88,9 @@ DEMO_DATA = [
 
 
 class Command(BaseCommand):
-    help = "Create the demo user and sample data (idempotent). Use --reset to recreate it."
+    help = (
+        "Create the demo user and sample data (idempotent). Use --reset to recreate it."
+    )
 
     def add_arguments(self, parser):
         parser.add_argument(
@@ -91,7 +107,8 @@ class Command(BaseCommand):
         for entry in DEMO_DATA:
             self._seed_company(user, entry)
         self.stdout.write(
-            self.style.SUCCESS(f"Demo data ready for user '{DEMO_USERNAME}'"))
+            self.style.SUCCESS(f"Demo data ready for user '{DEMO_USERNAME}'")
+        )
 
     def _get_or_create_demo_user(self):
         user, created = get_user_model().objects.get_or_create(username=DEMO_USERNAME)
@@ -102,10 +119,8 @@ class Command(BaseCommand):
         return user
 
     def _reset(self, user):
-        deleted, _ = JobApplication.objects.filter(
-            company__owner=user).delete()
-        self.stdout.write(
-            f"Deleted {deleted} applications and related objects")
+        deleted, _ = JobApplication.objects.filter(company__owner=user).delete()
+        self.stdout.write(f"Deleted {deleted} applications and related objects")
         deleted, _ = Company.objects.filter(owner=user).delete()
         self.stdout.write(f"Deleted {deleted} companies and contacts")
 
@@ -128,8 +143,9 @@ class Command(BaseCommand):
             self._seed_application(company, app_data)
 
     def _seed_application(self, company, app_data):
-        fields = {k: v for k, v in app_data.items(
-        ) if k not in APPLICATION_RELATED_KEYS}
+        fields = {
+            k: v for k, v in app_data.items() if k not in APPLICATION_RELATED_KEYS
+        }
         application, created = JobApplication.objects.get_or_create(
             company=company,
             title=app_data["title"],

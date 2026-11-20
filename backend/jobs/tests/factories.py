@@ -1,7 +1,7 @@
 import factory
 
-from jobs.models import Company, Technology, JobApplication, Contact, Note
 from accounts.tests.factories import UserFactory
+from jobs.models import Company, Contact, JobApplication, Note, Technology
 
 
 class CompanyFactory(factory.django.DjangoModelFactory):
@@ -30,7 +30,7 @@ class JobApplicationFactory(factory.django.DjangoModelFactory):
 class ContactFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Contact
-    
+
     company = factory.SubFactory(CompanyFactory)
     name = factory.Faker("name")
 

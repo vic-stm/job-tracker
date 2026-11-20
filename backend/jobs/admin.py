@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Company, Technology, JobApplication, Contact, Note
+from .models import Company, Contact, JobApplication, Note, Technology
 
 
 class ContactInline(admin.StackedInline):
@@ -15,8 +15,7 @@ class NoteInline(admin.StackedInline):
 
 @admin.register(Company)
 class CompanyAdmin(admin.ModelAdmin):
-    list_display = ("name", "owner", "website",
-                    "location", "created_at", "updated_at")
+    list_display = ("name", "owner", "website", "location", "created_at", "updated_at")
     list_select_related = ("owner",)
     search_fields = ("name", "owner__username", "location")
     list_filter = ("created_at", "updated_at")
@@ -31,11 +30,25 @@ class TechnologyAdmin(admin.ModelAdmin):
 
 @admin.register(JobApplication)
 class JobApplicationAdmin(admin.ModelAdmin):
-    list_display = ("company", "title", "work_mode", "seniority",
-                    "status", "applied_on", "created_at", "updated_at")
+    list_display = (
+        "company",
+        "title",
+        "work_mode",
+        "seniority",
+        "status",
+        "applied_on",
+        "created_at",
+        "updated_at",
+    )
     list_select_related = ("company",)
     search_fields = ("title", "company__name")
-    list_filter = ("work_mode", "seniority", "status",
-                   "applied_on", "created_at", "updated_at")
+    list_filter = (
+        "work_mode",
+        "seniority",
+        "status",
+        "applied_on",
+        "created_at",
+        "updated_at",
+    )
     filter_horizontal = ("technologies",)
     inlines = [NoteInline]

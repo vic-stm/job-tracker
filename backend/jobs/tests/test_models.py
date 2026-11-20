@@ -2,8 +2,13 @@ import pytest
 from django.db import IntegrityError
 from django.db.models import ProtectedError
 
-from jobs.tests.factories import TechnologyFactory, CompanyFactory, JobApplicationFactory, NoteFactory
 from jobs.models import Company, JobApplication, Note
+from jobs.tests.factories import (
+    CompanyFactory,
+    JobApplicationFactory,
+    NoteFactory,
+    TechnologyFactory,
+)
 
 
 @pytest.mark.django_db
@@ -38,7 +43,7 @@ def test_salary_min_cannot_be_greater_than_max():
 @pytest.mark.django_db
 def test_salary_range_can_be_partial():
     JobApplicationFactory(salary_min=50000, salary_max=None)
-    
+
     assert JobApplication.objects.filter(
         salary_min=50000, salary_max__isnull=True
     ).exists()
@@ -56,7 +61,7 @@ def test_company_with_applications_cannot_be_deleted():
 @pytest.mark.django_db
 def test_deleting_application_deletes_its_notes():
     note = NoteFactory()
-    
+
     note.application.delete()
 
     assert not Note.objects.filter(pk=note.pk).exists()

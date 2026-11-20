@@ -22,19 +22,23 @@ def test_seed_demo_creates_demo_user_with_known_password(demo_user):
 def test_seed_demo_is_idempotent(demo_user):
     companies_before = Company.objects.filter(owner=demo_user).count()
     applications_before = JobApplication.objects.filter(
-        company__owner=demo_user).count()
-    notes_before = Note.objects.filter(
-        application__company__owner=demo_user).count()
+        company__owner=demo_user
+    ).count()
+    notes_before = Note.objects.filter(application__company__owner=demo_user).count()
 
     assert companies_before > 0
 
     call_command("seed_demo", stdout=StringIO())
 
     assert Company.objects.filter(owner=demo_user).count() == companies_before
-    assert JobApplication.objects.filter(
-        company__owner=demo_user).count() == applications_before
-    assert Note.objects.filter(
-        application__company__owner=demo_user).count() == notes_before
+    assert (
+        JobApplication.objects.filter(company__owner=demo_user).count()
+        == applications_before
+    )
+    assert (
+        Note.objects.filter(application__company__owner=demo_user).count()
+        == notes_before
+    )
 
 
 def test_seed_demo_restores_demo_password(demo_user):
