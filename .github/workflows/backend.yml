@@ -36,7 +36,7 @@ jobs:
       DATABASE_URL: postgres://jobtracker:jobtracker@localhost:5432/jobtracker
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
 
       - uses: astral-sh/setup-uv@v7
         with:
