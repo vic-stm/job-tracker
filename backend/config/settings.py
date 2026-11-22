@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "accounts",
     "jobs",
+    "rest_framework",
 ]
 
 AUTH_USER_MODEL = "accounts.User"
@@ -128,3 +129,9 @@ MAILERS = {
         "BACKEND": "django.core.mail.backends.console.EmailBackend",
     },
 }
+
+REST_FRAMEWORK = {
+    "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.IsAuthenticated"],
+}
+
+LOGIN_REDIRECT_URL = "/api/"
