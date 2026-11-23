@@ -1,11 +1,12 @@
 from rest_framework import viewsets
 
-from .models import Company, Contact, JobApplication, Note
+from .models import Company, Contact, JobApplication, Note, Technology
 from .serializers import (
     CompanySerializer,
     ContactSerializer,
     JobApplicationSerializer,
     NoteSerializer,
+    TechnologySerializer,
 )
 
 
@@ -50,3 +51,8 @@ class ContactViewSet(viewsets.ModelViewSet):
         if company_id is not None:
             queryset = queryset.filter(company_id=company_id)
         return queryset
+
+
+class TechnologyViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Technology.objects.all()
+    serializer_class = TechnologySerializer

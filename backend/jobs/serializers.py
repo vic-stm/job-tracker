@@ -119,3 +119,9 @@ class ContactSerializer(serializers.ModelSerializer):
         request = self.context.get("request")
         if request is not None:
             self.fields["company"].queryset = Company.objects.filter(owner=request.user)
+
+
+class TechnologySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Technology
+        fields = ["id", "name"]
