@@ -1,7 +1,7 @@
 from rest_framework import viewsets
 
-from .models import Company, JobApplication
-from .serializers import CompanySerializer, JobApplicationSerializer
+from .models import Company, JobApplication, Note
+from .serializers import CompanySerializer, JobApplicationSerializer, NoteSerializer
 
 
 class CompanyViewSet(viewsets.ModelViewSet):
@@ -23,3 +23,14 @@ class JobApplicationViewSet(viewsets.ModelViewSet):
             .select_related("company")
             .prefetch_related("technologies")
         )
+
+
+class NoteViewSet(viewsets.ModelViewSet):
+    serializer_class = NoteSerializer
+
+    def get_queryset(self):
+        queryset = Note.objects.filter(application__company__owner=self.request.user)
+        application_id = self.request.query_params.get("application")
+        if application_id is not None:
+            queryset = queryset.filter(application_id=application_id)
+        return queryset

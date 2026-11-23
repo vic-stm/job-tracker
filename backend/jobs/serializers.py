@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Company, JobApplication, Technology
+from .models import Company, JobApplication, Note, Technology
 
 
 class CompanySerializer(serializers.ModelSerializer):
@@ -81,3 +81,18 @@ class JobApplicationSerializer(serializers.ModelSerializer):
                 }
             )
         return attrs
+
+
+class NoteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Note
+        fields = ["id", "application", "body", "created_at", "updated_at"]
+        read_only_fields = ["id", "created_at", "updated_at"]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        request = self.context.get("request")
+        if request is not None:
+            self.fields["application"].queryset = JobApplication.objects.filter(
+                company__owner=request.user
+            )
