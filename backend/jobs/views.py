@@ -14,6 +14,8 @@ class CompanyViewSet(viewsets.ModelViewSet):
     serializer_class = CompanySerializer
 
     def get_queryset(self):
+        if getattr(self, "swagger_fake_view", False):
+            return Company.objects.none()
         return Company.objects.filter(owner=self.request.user)
 
     def perform_create(self, serializer):
@@ -24,6 +26,8 @@ class JobApplicationViewSet(viewsets.ModelViewSet):
     serializer_class = JobApplicationSerializer
 
     def get_queryset(self):
+        if getattr(self, "swagger_fake_view", False):
+            return JobApplication.objects.none()
         return (
             JobApplication.objects.filter(company__owner=self.request.user)
             .select_related("company")
@@ -35,6 +39,8 @@ class NoteViewSet(viewsets.ModelViewSet):
     serializer_class = NoteSerializer
 
     def get_queryset(self):
+        if getattr(self, "swagger_fake_view", False):
+            return Note.objects.none()
         queryset = Note.objects.filter(application__company__owner=self.request.user)
         application_id = self.request.query_params.get("application")
         if application_id is not None:
@@ -46,6 +52,8 @@ class ContactViewSet(viewsets.ModelViewSet):
     serializer_class = ContactSerializer
 
     def get_queryset(self):
+        if getattr(self, "swagger_fake_view", False):
+            return Contact.objects.none()
         queryset = Contact.objects.filter(company__owner=self.request.user)
         company_id = self.request.query_params.get("company")
         if company_id is not None:

@@ -11,3 +11,7 @@ node_modules/
 
 # Cache
 .pytest_cache/
+.ruff_cache/
+
+# Generated OpenAPI schema
+schema.yml

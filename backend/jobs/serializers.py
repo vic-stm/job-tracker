@@ -64,8 +64,11 @@ class JobApplicationSerializer(serializers.ModelSerializer):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         request = self.context.get("request")
-        if request is not None:
-            self.fields["company"].queryset = Company.objects.filter(owner=request.user)
+        user = getattr(request, "user", None)
+        if user is not None and user.is_authenticated:
+            self.fields["company"].queryset = Company.objects.filter(owner=user)
+        else:
+            self.fields["company"].queryset = Company.objects.none()
 
     def validate(self, attrs):
         salary_min = attrs.get("salary_min", getattr(self.instance, "salary_min", None))
@@ -92,10 +95,13 @@ class NoteSerializer(serializers.ModelSerializer):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         request = self.context.get("request")
-        if request is not None:
+        user = getattr(request, "user", None)
+        if user is not None and user.is_authenticated:
             self.fields["application"].queryset = JobApplication.objects.filter(
-                company__owner=request.user
+                company__owner=user
             )
+        else:
+            self.fields["application"].queryset = JobApplication.objects.none()
 
 
 class ContactSerializer(serializers.ModelSerializer):
@@ -117,8 +123,11 @@ class ContactSerializer(serializers.ModelSerializer):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         request = self.context.get("request")
-        if request is not None:
-            self.fields["company"].queryset = Company.objects.filter(owner=request.user)
+        user = getattr(request, "user", None)
+        if user is not None and user.is_authenticated:
+            self.fields["company"].queryset = Company.objects.filter(owner=user)
+        else:
+            self.fields["company"].queryset = Company.objects.none()
 
 
 class TechnologySerializer(serializers.ModelSerializer):
