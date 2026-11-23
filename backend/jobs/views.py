@@ -1,7 +1,12 @@
 from rest_framework import viewsets
 
-from .models import Company, JobApplication, Note
-from .serializers import CompanySerializer, JobApplicationSerializer, NoteSerializer
+from .models import Company, Contact, JobApplication, Note
+from .serializers import (
+    CompanySerializer,
+    ContactSerializer,
+    JobApplicationSerializer,
+    NoteSerializer,
+)
 
 
 class CompanyViewSet(viewsets.ModelViewSet):
@@ -33,4 +38,15 @@ class NoteViewSet(viewsets.ModelViewSet):
         application_id = self.request.query_params.get("application")
         if application_id is not None:
             queryset = queryset.filter(application_id=application_id)
+        return queryset
+
+
+class ContactViewSet(viewsets.ModelViewSet):
+    serializer_class = ContactSerializer
+
+    def get_queryset(self):
+        queryset = Contact.objects.filter(company__owner=self.request.user)
+        company_id = self.request.query_params.get("company")
+        if company_id is not None:
+            queryset = queryset.filter(company_id=company_id)
         return queryset
