@@ -19,8 +19,7 @@ def test_list_returns_only_own_companies(auth_client, user):
 def test_retrieve_other_users_company_returns_404(auth_client):
     other_company = CompanyFactory()
 
-    response = auth_client.get(
-        reverse("company-detail", args=[other_company.id]))
+    response = auth_client.get(reverse("company-detail", args=[other_company.id]))
 
     assert response.status_code == 404
 
@@ -29,8 +28,7 @@ def test_create_sets_owner_to_current_user(auth_client, user):
     other_user = UserFactory()
     payload = {"name": "Acme", "owner": other_user.id}
 
-    response = auth_client.post(
-        reverse("company-list"), payload, format="json")
+    response = auth_client.post(reverse("company-list"), payload, format="json")
 
     assert response.status_code == 201
     company = Company.objects.get(pk=response.json()["id"])
