@@ -30,6 +30,7 @@ jobs:
           --health-retries 5
 
     env:
+      # CI-only values: ephemeral database inside the runner, no real data.
       DJANGO_SECRET_KEY: ci-only-not-a-real-secret
       DJANGO_DEBUG: "False"
       DJANGO_ALLOWED_HOSTS: localhost
@@ -56,6 +57,9 @@ jobs:
 
       - name: Pending migrations
         run: uv run python manage.py makemigrations --check --dry-run
+
+      - name: OpenAPI schema
+        run: uv run python manage.py spectacular --validate --fail-on-warn --file schema.yml
 
       - name: Pytest
         run: uv run pytest
