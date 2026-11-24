@@ -1,3 +1,5 @@
+import logging
+
 from django.contrib.auth import authenticate, login, logout
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_protect, ensure_csrf_cookie
@@ -5,9 +7,12 @@ from drf_spectacular.utils import extend_schema
 from rest_framework import status
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
+from rest_framework.throttling import ScopedRateThrottle
 from rest_framework.views import APIView
 
 from .serializers import LoginSerializer, UserSerializer
+
+logger = logging.getLogger(__name__)
 
 
 class CsrfView(APIView):
@@ -22,19 +27,28 @@ class CsrfView(APIView):
 @method_decorator(csrf_protect, name="dispatch")
 class LoginView(APIView):
     permission_classes = [AllowAny]
+    throttle_classes = [ScopedRateThrottle]
+    throttle_scope = "login"
 
     @extend_schema(request=LoginSerializer, responses=UserSerializer)
     def post(self, request):
         serializer = LoginSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
+        username = serializer.validated_data["username"]
+
         user = authenticate(
             request,
-            username=serializer.validated_data["username"],
+            username=username,
             password=serializer.validated_data["password"],
         )
 
         if user is None:
+            logger.warning(
+                "Failed login for username=%s from ip=%s",
+                username,
+                request.META.get("REMOTE_ADDR")
+            )
             return Response(
                 {"detail": "Invalid username or password"},
                 status=status.HTTP_400_BAD_REQUEST
