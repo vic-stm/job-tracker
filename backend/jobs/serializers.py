@@ -3,6 +3,15 @@ from rest_framework import serializers
 from .models import Company, Contact, JobApplication, Note, Technology
 
 
+def get_authenticated_user(serializer):
+    request = serializer.context.get("request")
+    user = getattr(request, "user", None)
+
+    if user is not None and user.is_authenticated:
+        return user
+    return None
+
+
 class CompanySerializer(serializers.ModelSerializer):
     class Meta:
         model = Company
@@ -63,12 +72,10 @@ class JobApplicationSerializer(serializers.ModelSerializer):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        request = self.context.get("request")
-        user = getattr(request, "user", None)
-        if user is not None and user.is_authenticated:
-            self.fields["company"].queryset = Company.objects.filter(owner=user)
-        else:
-            self.fields["company"].queryset = Company.objects.none()
+        user = get_authenticated_user(self)
+        self.fields["company"].queryset = (
+            Company.objects.filter(owner=user) if user else Company.objects.none()
+        )
 
     def validate(self, attrs):
         salary_min = attrs.get("salary_min", getattr(self.instance, "salary_min", None))
@@ -94,14 +101,12 @@ class NoteSerializer(serializers.ModelSerializer):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        request = self.context.get("request")
-        user = getattr(request, "user", None)
-        if user is not None and user.is_authenticated:
-            self.fields["application"].queryset = JobApplication.objects.filter(
-                company__owner=user
-            )
-        else:
-            self.fields["application"].queryset = JobApplication.objects.none()
+        user = get_authenticated_user(self)
+        self.fields["application"].queryset = (
+            JobApplication.objects.filter(company__owner=user)
+            if user
+            else JobApplication.objects.none()
+        )
 
 
 class ContactSerializer(serializers.ModelSerializer):
@@ -122,12 +127,10 @@ class ContactSerializer(serializers.ModelSerializer):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        request = self.context.get("request")
-        user = getattr(request, "user", None)
-        if user is not None and user.is_authenticated:
-            self.fields["company"].queryset = Company.objects.filter(owner=user)
-        else:
-            self.fields["company"].queryset = Company.objects.none()
+        user = get_authenticated_user(self)
+        self.fields["company"].queryset = (
+            Company.objects.filter(owner=user) if user else Company.objects.none()
+        )
 
 
 class TechnologySerializer(serializers.ModelSerializer):
