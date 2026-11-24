@@ -1,4 +1,5 @@
 import pytest
+from django.core.cache import cache
 from rest_framework.test import APIClient
 
 from accounts.tests.factories import UserFactory
@@ -18,3 +19,8 @@ def user(db):
 def auth_client(api_client, user):
     api_client.force_authenticate(user=user)
     return api_client
+
+
+@pytest.fixture(autouse=True)
+def clear_cache():
+    cache.clear()
