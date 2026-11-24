@@ -38,13 +38,16 @@ importers:
     devDependencies:
       '@angular/build':
         specifier: ^22.3.0
-        version: 22.3.0(@angular/compiler-cli@22.3.0(@angular/compiler@22.3.0)(typescript@6.0.3))(@angular/compiler@22.3.0)(@angular/core@22.3.0(@angular/compiler@22.3.0)(rxjs@7.8.2))(@angular/platform-browser@22.3.0(@angular/common@22.3.0(@angular/core@22.3.0(@angular/compiler@22.3.0)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.3.0(@angular/compiler@22.3.0)(rxjs@7.8.2)))(postcss@8.5.33)(tslib@2.9.1)(typescript@6.0.3)(vitest@5.1.1(jsdom@31.0.1)(vite@8.3.8(esbuild@0.28.2)(sass-embedded@1.108.2)(sass@1.108.2)))
+        version: 22.3.0(@angular/compiler-cli@22.3.0(@angular/compiler@22.3.0)(typescript@6.0.3))(@angular/compiler@22.3.0)(@angular/core@22.3.0(@angular/compiler@22.3.0)(rxjs@7.8.2))(@angular/localize@22.3.0(@angular/compiler-cli@22.3.0(@angular/compiler@22.3.0)(typescript@6.0.3))(@angular/compiler@22.3.0))(@angular/platform-browser@22.3.0(@angular/common@22.3.0(@angular/core@22.3.0(@angular/compiler@22.3.0)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.3.0(@angular/compiler@22.3.0)(rxjs@7.8.2)))(postcss@8.5.33)(tslib@2.9.1)(typescript@6.0.3)(vitest@5.1.1(jsdom@31.0.1)(vite@8.3.8(esbuild@0.28.2)(sass-embedded@1.108.2)(sass@1.108.2)))
       '@angular/cli':
         specifier: ^22.3.0
         version: 22.3.0(chokidar@6.0.0)
       '@angular/compiler-cli':
         specifier: ^22.3.0
         version: 22.3.0(@angular/compiler@22.3.0)(typescript@6.0.3)
+      '@angular/localize':
+        specifier: ^22.3.0
+        version: 22.3.0(@angular/compiler-cli@22.3.0(@angular/compiler@22.3.0)(typescript@6.0.3))(@angular/compiler@22.3.0)
       jsdom:
         specifier: ^31.0.0
         version: 31.0.1
@@ -182,6 +185,14 @@ packages:
       '@angular/core': 22.3.0
       '@angular/platform-browser': 22.3.0
       rxjs: ^6.5.3 || ^7.4.0
+
+  '@angular/localize@22.3.0':
+    resolution: {integrity: sha512-hZozMlytr1CEM8KUJQkSjAQjhkmj4+9B33WHIAO+2xkL4rcLJOp1Y7lziUQ+QTxSieuc/nT4zN9DFyGTSO43bQ==}
+    engines: {node: ^22.22.3 || ^24.15.0 || >=26.0.0}
+    hasBin: true
+    peerDependencies:
+      '@angular/compiler': 22.3.0
+      '@angular/compiler-cli': 22.3.0
 
   '@angular/platform-browser@22.3.0':
     resolution: {integrity: sha512-cbDtSz7gme4EmAnl+GcWLnAloPQRFHUTm/vUW9EDRR/ahO1xWY8Y4vtB9xtxppPIEcbsrAGQzyApXoKLr/cHDg==}
@@ -2386,7 +2397,7 @@ snapshots:
     transitivePeerDependencies:
       - chokidar
 
-  '@angular/build@22.3.0(@angular/compiler-cli@22.3.0(@angular/compiler@22.3.0)(typescript@6.0.3))(@angular/compiler@22.3.0)(@angular/core@22.3.0(@angular/compiler@22.3.0)(rxjs@7.8.2))(@angular/platform-browser@22.3.0(@angular/common@22.3.0(@angular/core@22.3.0(@angular/compiler@22.3.0)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.3.0(@angular/compiler@22.3.0)(rxjs@7.8.2)))(postcss@8.5.33)(tslib@2.9.1)(typescript@6.0.3)(vitest@5.1.1(jsdom@31.0.1)(vite@8.3.8(esbuild@0.28.2)(sass-embedded@1.108.2)(sass@1.108.2)))':
+  '@angular/build@22.3.0(@angular/compiler-cli@22.3.0(@angular/compiler@22.3.0)(typescript@6.0.3))(@angular/compiler@22.3.0)(@angular/core@22.3.0(@angular/compiler@22.3.0)(rxjs@7.8.2))(@angular/localize@22.3.0(@angular/compiler-cli@22.3.0(@angular/compiler@22.3.0)(typescript@6.0.3))(@angular/compiler@22.3.0))(@angular/platform-browser@22.3.0(@angular/common@22.3.0(@angular/core@22.3.0(@angular/compiler@22.3.0)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.3.0(@angular/compiler@22.3.0)(rxjs@7.8.2)))(postcss@8.5.33)(tslib@2.9.1)(typescript@6.0.3)(vitest@5.1.1(jsdom@31.0.1)(vite@8.3.8(esbuild@0.28.2)(sass-embedded@1.108.2)(sass@1.108.2)))':
     dependencies:
       '@ampproject/remapping': 2.3.0
       '@angular-devkit/architect': 0.2203.0(chokidar@6.0.0)
@@ -2422,6 +2433,7 @@ snapshots:
       xxhash-wasm: 1.1.0
     optionalDependencies:
       '@angular/core': 22.3.0(@angular/compiler@22.3.0)(rxjs@7.8.2)
+      '@angular/localize': 22.3.0(@angular/compiler-cli@22.3.0(@angular/compiler@22.3.0)(typescript@6.0.3))(@angular/compiler@22.3.0)
       '@angular/platform-browser': 22.3.0(@angular/common@22.3.0(@angular/core@22.3.0(@angular/compiler@22.3.0)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.3.0(@angular/compiler@22.3.0)(rxjs@7.8.2))
       '@oxc-parser/binding-wasm32-wasi': 0.158.0
       lmdb: 3.5.9
@@ -2505,6 +2517,14 @@ snapshots:
       rxjs: 7.8.2
       tslib: 2.9.1
       zod: 4.6.7
+
+  '@angular/localize@22.3.0(@angular/compiler-cli@22.3.0(@angular/compiler@22.3.0)(typescript@6.0.3))(@angular/compiler@22.3.0)':
+    dependencies:
+      '@angular/compiler': 22.3.0
+      '@angular/compiler-cli': 22.3.0(@angular/compiler@22.3.0)(typescript@6.0.3)
+      '@babel/core': 8.1.0
+      tinyglobby: 0.2.17
+      yargs: 18.2.0
 
   '@angular/platform-browser@22.3.0(@angular/common@22.3.0(@angular/core@22.3.0(@angular/compiler@22.3.0)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.3.0(@angular/compiler@22.3.0)(rxjs@7.8.2))':
     dependencies:

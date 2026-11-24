@@ -29,9 +29,8 @@
                 "input": "public"
               }
             ],
-            "styles": [
-              "src/styles.scss"
-            ]
+            "styles": ["src/styles.scss"],
+            "polyfills": ["@angular/localize/init"]
           },
           "configurations": {
             "production": {
@@ -68,7 +67,7 @@
             }
           },
           "defaultConfiguration": "development",
-          "options": {"proxyConfig": "proxy.conf.json"}
+          "options": { "proxyConfig": "proxy.conf.json" }
         },
         "test": {
           "builder": "@angular/build:unit-test"
