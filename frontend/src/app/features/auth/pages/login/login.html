@@ -1,0 +1,30 @@
+<form [formRoot]="loginForm">
+  <label for="username" i18n>Username</label>
+  <input id="username" type="text" autocomplete="username" [formField]="loginForm.username" />
+
+  @if (loginForm.username().touched()) {
+    @for (error of loginForm.username().errors(); track error.kind) {
+      <p role="alert">{{ error.message }}</p>
+    }
+  }
+
+  <label for="password" i18n>Password</label>
+  <input
+    id="password"
+    type="password"
+    autocomplete="current-password"
+    [formField]="loginForm.password"
+  />
+
+  @if (loginForm.password().touched()) {
+    @for (error of loginForm.password().errors(); track error.kind) {
+      <p role="alert">{{ error.message }}</p>
+    }
+  }
+
+  @if (loginError(); as message) {
+    <p role="alert">{{ message }}</p>
+  }
+
+  <button type="submit" [disabled]="loginForm().submitting()" i18n>Log in</button>
+</form>

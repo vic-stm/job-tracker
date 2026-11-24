@@ -1,0 +1,8 @@
+@if (authStore.isAuthenticated()) {
+  <header>
+    <span>{{ authStore.user()?.username }}</span>
+    <button type="button" (click)="logout()" i18n>Log out</button>
+  </header>
+}
+
+<router-outlet />
