@@ -47,11 +47,11 @@ class LoginView(APIView):
             logger.warning(
                 "Failed login for username=%s from ip=%s",
                 username,
-                request.META.get("REMOTE_ADDR")
+                request.META.get("REMOTE_ADDR"),
             )
             return Response(
                 {"detail": "Invalid username or password"},
-                status=status.HTTP_400_BAD_REQUEST
+                status=status.HTTP_400_BAD_REQUEST,
             )
 
         login(request, user)

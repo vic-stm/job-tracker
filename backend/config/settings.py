@@ -137,9 +137,7 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework.authentication.SessionAuthentication"
     ],
-    "DEFAULT_THROTTLE_RATES": {
-        "login": "5/min"
-    }
+    "DEFAULT_THROTTLE_RATES": {"login": "5/min"},
 }
 
 SPECTACULAR_SETTINGS = {
@@ -161,8 +159,5 @@ LOGGING = {
     "handlers": {
         "console": {"class": "logging.StreamHandler", "formatter": "simple"},
     },
-    "root": {
-        "handlers": ["console"],
-        "level": env("DJANGO_LOG_LEVEL", default="INFO")
-    }
+    "root": {"handlers": ["console"], "level": env("DJANGO_LOG_LEVEL", default="INFO")},
 }
