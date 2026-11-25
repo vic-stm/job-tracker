@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     "jobs",
     "rest_framework",
     "drf_spectacular",
+    "django_filters",
 ]
 
 AUTH_USER_MODEL = "accounts.User"
@@ -138,6 +139,7 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.SessionAuthentication"
     ],
     "DEFAULT_THROTTLE_RATES": {"login": "5/min"},
+    "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
 }
 
 SPECTACULAR_SETTINGS = {

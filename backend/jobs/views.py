@@ -1,5 +1,6 @@
 from rest_framework import viewsets
 
+from .filters import JobApplicationFilter
 from .models import Company, Contact, JobApplication, Note, Technology
 from .serializers import (
     CompanySerializer,
@@ -24,6 +25,7 @@ class CompanyViewSet(viewsets.ModelViewSet):
 
 class JobApplicationViewSet(viewsets.ModelViewSet):
     serializer_class = JobApplicationSerializer
+    filterset_class = JobApplicationFilter
 
     def get_queryset(self):
         if getattr(self, "swagger_fake_view", False):
