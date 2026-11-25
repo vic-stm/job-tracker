@@ -59,3 +59,49 @@ def test_list_has_no_n_plus_one(auth_client, user, django_assert_num_queries):
 
     assert response.status_code == 200
     assert len(response.json()) == 3
+
+
+def test_filter_by_status_returns_only_matching_applications(auth_client, user):
+    applied = JobApplicationFactory(
+        company__owner=user, status=JobApplication.Status.APPLIED
+    )
+    JobApplicationFactory(company__owner=user, status=JobApplication.Status.REJECTED)
+
+    response = auth_client.get(
+        reverse("application-list"), {"status": JobApplication.Status.APPLIED}
+    )
+
+    assert response.status_code == 200
+    assert [a["id"] for a in response.json()] == [applied.id]
+
+
+def test_filter_by_invalid_status_returns_400(auth_client):
+    response = auth_client.get(reverse("application-list"), {"status": "wrong-status"})
+
+    assert response.status_code == 400
+    assert "status" in response.json()
+
+
+def test_filter_by_technology_is_case_insensitive(auth_client, user):
+    django = TechnologyFactory(name="Django")
+    with_django = JobApplicationFactory(company__owner=user)
+    with_django.technologies.add(django)
+    JobApplicationFactory(company__owner=user)
+
+    response = auth_client.get(reverse("application-list"), {"technology": "django"})
+
+    assert response.status_code == 200
+    assert [a["id"] for a in response.json()] == [with_django.id]
+
+
+def test_filter_by_technology_excludes_other_users_applications(auth_client, user):
+    django = TechnologyFactory(name="Django")
+    own = JobApplicationFactory(company__owner=user)
+    other = JobApplicationFactory()
+    own.technologies.add(django)
+    other.technologies.add(django)
+
+    response = auth_client.get(reverse("application-list"), {"technology": "django"})
+
+    assert response.status_code == 200
+    assert [a["id"] for a in response.json()] == [own.id]
